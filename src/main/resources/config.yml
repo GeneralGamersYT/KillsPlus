@@ -1,0 +1,11 @@
+# Killsplus Automated Configuration #
+
+onkill:
+  commands:
+  - 'tell %killedplayer% &cPoor you! You were killed by &c&l%killer%!'
+  - 'tell %killer% &cYou just killed &c&l%killedplayer%!'
+pvp:
+  enabledworlds:
+  - 'example-enabled-world-name'
+  disabledworlds:
+  - 'example-disabled-world-name'

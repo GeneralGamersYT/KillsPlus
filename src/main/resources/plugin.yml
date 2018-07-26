@@ -1,0 +1,13 @@
+name: KillsPlus
+version: 3.0
+description: An all round combat managing plugin
+author: Oscazz
+main: ninja.oscaz.killsplus.Main
+
+commands:
+  killsplus:
+    description: Killsplus core commandgui
+    aliases: [kps]
+  combattag:
+    description: Checks time remaining on Combat Tag
+    aliases: [ct, ctag, combatt]
