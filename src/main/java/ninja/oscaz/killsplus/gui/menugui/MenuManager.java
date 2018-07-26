@@ -35,7 +35,7 @@ public class MenuManager implements MenuListener {
             return;
         }
         if (event.getSlot() == 14) {
-            event.getWhoClicked().openInventory(guiManager.getCMenuManager().getCommandMenu().getGui());
+            event.getWhoClicked().openInventory(guiManager.getCMenuManager().getCommandMenu().getGui(main));
             return;
         }
         if (event.getSlot() == Items.ARROW_INT) {
