@@ -10,4 +10,4 @@ commands:
     aliases: [kps]
   combattag:
     description: Checks time remaining on Combat Tag
-    aliases: [ct, ctag, combatt]
+    aliases: [ct, ctag, combatt, combattime]

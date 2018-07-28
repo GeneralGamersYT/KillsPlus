@@ -44,6 +44,9 @@ public class TagMenuManager implements MenuListener {
         Arrays.stream(Offset.values())
                 .forEach(offset -> {
                     BigDecimal time = BigDecimal.valueOf(main.getManager().get("tag.time"));
+                    if (time.doubleValue() - offset.getAmount().doubleValue() <= 0) {
+                        return;
+                    }
                     time = time.add(offset.getAmount());
                     main.getManager().set("tag.time", time.doubleValue());
                 });

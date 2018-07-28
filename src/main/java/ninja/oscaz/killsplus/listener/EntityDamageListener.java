@@ -3,6 +3,7 @@ package ninja.oscaz.killsplus.listener;
 import ninja.oscaz.killsplus.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
@@ -14,9 +15,8 @@ public class EntityDamageListener implements Listener {
         this.main = main;
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void on(EntityDamageByEntityEvent event) {
-        // Pvp - enable / disabled / set
         if (!(event.getDamager() instanceof Player)) return;
         if (!(event.getEntity() instanceof Player)) return;
         if (main.getManager().get("pvp.enableall").equals("false")) {
@@ -27,7 +27,13 @@ public class EntityDamageListener implements Listener {
             event.setCancelled(true);
             return;
         }
-
+        Player entity = (Player) event.getEntity();
+        Player damager = (Player) entity.getLastDamageCause().getEntity();
+        if (main.getManager().get("tag.enabled")) {
+            // add tag message on tag
+            main.addTaggedPlayer(entity.getUniqueId());
+            main.addTaggedPlayer(damager.getUniqueId());
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package ninja.oscaz.killsplus;
 
+import ninja.oscaz.killsplus.command.CombatTagCommand;
 import ninja.oscaz.killsplus.command.KillsplusCommand;
 import ninja.oscaz.killsplus.gui.GuiManager;
 import ninja.oscaz.killsplus.listener.ChatListener;
@@ -22,6 +23,10 @@ public class Main extends JavaPlugin {
     private final Map<UUID, String> tagInput = new HashMap<>();
     private final Set<UUID> commandInput = new HashSet<>();
 
+    private final Map<UUID, Double> tagged = new HashMap<>();
+
+    private final Map<Runnable, Integer> runnableMap = new HashMap<>();
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
@@ -37,6 +42,7 @@ public class Main extends JavaPlugin {
         }
 
         this.getCommand("killsplus").setExecutor(new KillsplusCommand(this));
+        this.getCommand("comattag").setExecutor(new CombatTagCommand(this));
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(this), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(this), this);
@@ -69,6 +75,36 @@ public class Main extends JavaPlugin {
 
     public Set<UUID> getCommandInput() {
         return commandInput;
+    }
+
+    public Map<UUID, Double> getTagged() { return tagged; }
+
+    public Map<Runnable, Integer> getRunnableMap() {
+        return runnableMap;
+    }
+
+    public void addTaggedPlayer(UUID uuid) {
+        if (this.tagged.get(uuid) != null) {
+            this.tagged.put(uuid, this.manager.get("tag.time"));
+        } else {
+            this.tagged.put(uuid, this.manager.get("tag.time"));
+            this.startTaggedTimer(uuid);
+        }
+    }
+
+    private void startTaggedTimer(UUID uuid) {
+        Runnable runnable = () -> {
+            Double time = Main.this.getTagged().get(uuid);
+            if (time <= 0) {
+                Main.this.getTagged().remove(uuid);
+                Bukkit.getScheduler().cancelTask(Main.this.getRunnableMap().get(this));
+            } else {
+                // find player that has uuid and send no longer tagged message
+                Main.this.getTagged().put(uuid, time - 1);
+            }
+        };
+        Integer id = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, runnable, 1L, 0L);
+        runnableMap.put(runnable, id);
     }
 
 }

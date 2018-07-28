@@ -19,12 +19,23 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void on(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null) {
+            return;
+        }
         if (event.getClickedInventory().getName().equalsIgnoreCase(Title.INDEX.getTitle())) {
             main.getGuiManager().getMenuManager().manageEvent(event);
             return;
         }
         if (event.getClickedInventory().getName().equalsIgnoreCase(Title.HEAD.getTitle())) {
             main.getGuiManager().getHMenuManager().manageEvent(event);
+            return;
+        }
+        if (event.getClickedInventory().getName().equalsIgnoreCase(Title.TAG.getTitle())) {
+            main.getGuiManager().getTagMenuManager().manageEvent(event);
+            return;
+        }
+        if (event.getClickedInventory().getName().equalsIgnoreCase(Title.COMMAND.getTitle())) {
+            main.getGuiManager().getCMenuManager().manageEvent(event);
             return;
         }
     }
